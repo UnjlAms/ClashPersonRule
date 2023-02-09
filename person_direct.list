@@ -1,4 +1,5 @@
 # 公司地址
 DOMAIN-SUFFIX,my.gdtel.com
 DOMAIN-SUFFIX,centos.vm
-DOMAIN-SUFFIX,baidu.com
+DOMAIN-SUFFIX,centos.wsl
+DOMAIN-SUFFIX,ip.istatmenus.app
