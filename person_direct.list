@@ -3,6 +3,8 @@ DOMAIN-SUFFIX,my.gdtel.com
 DOMAIN-SUFFIX,centos.vm
 DOMAIN-SUFFIX,centos.wsl
 DOMAIN-SUFFIX,ip.istatmenus.app
+IP-CIDR,127.0.0.0/8,no-resolve
+IP-CIDR,172.16.0.0/12,no-resolve
 IP-CIDR,132.126.0.0/16,no-resolve
 IP-CIDR,132.122.0.0/16,no-resolve
 IP-CIDR,10.157.160.0/24,no-resolve
