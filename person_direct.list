@@ -3,6 +3,8 @@ DOMAIN-SUFFIX,gdtel.com
 DOMAIN-SUFFIX,centos.vm
 DOMAIN-SUFFIX,centos.wsl
 DOMAIN-SUFFIX,ip.istatmenus.app
+DOMAIN-SUFFIX,ping.pe
+DOMAIN-SUFFIX,urlencoder.org
 IP-CIDR,127.0.0.0/8,no-resolve
 IP-CIDR,172.16.0.0/12,no-resolve
 IP-CIDR,132.126.0.0/16,no-resolve
