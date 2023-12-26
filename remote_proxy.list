@@ -3,3 +3,5 @@ IP-CIDR,134.175.253.0/24,no-resolve
 IP-CIDR,221.235.199.0/24,no-resolve
 IP-CIDR,121.11.211.0/24,no-resolve
 IP-CIDR,36.248.221.0/24,no-resolve
+IP-CIDR,36.250.237.0/24,no-resolve
+IP-CIDR,36.250.224.0/24,no-resolve
