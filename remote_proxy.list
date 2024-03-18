@@ -14,4 +14,5 @@ IP-CIDR,153.99.245.0/24,no-resolve
 IP-CIDR,220.202.54.0/24,no-resolve
 IP-CIDR,203.91.39.0/24,no-resolve
 IP-CIDR,115.227.49.0/24,no-resolve
-IP-CIDR,117.27.228.188/24,no-resolve
+IP-CIDR,117.27.228.0/24,no-resolve
+IP-CIDR,120.238.118.0/24,no-resolve
