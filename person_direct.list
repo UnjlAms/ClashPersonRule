@@ -6,7 +6,7 @@ DOMAIN-SUFFIX,ip.istatmenus.app
 DOMAIN-SUFFIX,ping.pe
 DOMAIN-SUFFIX,urlencoder.org
 DOMAIN-SUFFIX,juejin.cn
-IP-CIDR,127.0.0.0/8,no-resolve
+IP-CIDR,127.0.0.0/8,DIRECT
 IP-CIDR,172.16.0.0/16,no-resolve
 IP-CIDR,172.17.0.0/16,no-resolve
 IP-CIDR,172.18.0.0/16,no-resolve
@@ -23,7 +23,7 @@ IP-CIDR,172.28.0.0/16,no-resolve
 IP-CIDR,172.29.0.0/16,no-resolve
 IP-CIDR,172.30.0.0/16,no-resolve
 IP-CIDR,172.31.0.0/16,no-resolve
-IP-CIDR,192.168.0.0/16,no-resolve
+IP-CIDR,192.168.0.0/16,DIRECT
 IP-CIDR,132.126.0.0/16,no-resolve
 IP-CIDR,132.122.0.0/16,no-resolve
 IP-CIDR,10.157.160.0/24,no-resolve
