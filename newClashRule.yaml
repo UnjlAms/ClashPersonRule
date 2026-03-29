@@ -52,34 +52,20 @@ proxy-providers:
     url: ""
     path: ./proxy/UnjlAms.yaml
     interval: 7200
+    health-check:
+      enable: true
+      interval: 600
+      url: http://www.gstatic.com/generate_204
 
-  America:
+  mojie:
     type: http
     url: ""
     path: ./proxy/mojie.yaml
     interval: 7200
-    filter: "美国"
-
-  Japan:
-    type: http
-    url: ""
-    path: ./proxy/mojie.yaml
-    interval: 7200
-    filter: "日本"
-
-  TaiWan:
-    type: http
-    url: ""
-    path: ./proxy/mojie.yaml
-    interval: 7200
-    filter: "台湾"
-
-  Singapore:
-    type: http
-    url: ""
-    path: ./proxy/mojie.yaml
-    interval: 7200
-    filter: "新加坡"
+    health-check:
+      enable: true
+      interval: 600
+      url: http://www.gstatic.com/generate_204
 
 
 proxy-groups:
@@ -89,31 +75,65 @@ proxy-groups:
     interval: 300
     use:
       - UnjlAms
+
+  # 🇯🇵 Japan: 自动筛选日本地区的节点
+  - name: 🇯🇵 Japan
+    type: select
+    use:
+      - mojie
+    filter: "(?i)日|JP|Japan"
+
+  # 🇺🇸 United States: 自动筛选美国地区的节点
+  - name: 🇺🇸 United States
+    type: select
+    use:
+      - mojie
+    filter: "(?i)美|US|United States"
+
+  # 🇸🇬 Singapore: 自动筛选新加坡地区的节点
+  - name: 🇸🇬 Singapore
+    type: select
+    use:
+      - mojie
+    filter: "(?i)新|SG|Singapore"
+
+  # 🇹🇼 Taiwan: 自动筛选台湾地区的节点
+  - name: 🇹🇼 Taiwan
+    type: select
+    use:
+      - mojie
+    filter: "(?i)台|TW|Taiwan"
+
   - name: US
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 300
-    use:
-      - America
+    proxies:
+      - 🇺🇸 United States
+
   - name: 港澳台 BiliBili
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 300
     proxies:
       - DIRECT
+      -  🇹🇼 Taiwan
     use:
       - UnjlAms
-      - TaiWan
-  - name: 其他
+    #   -  🇹🇼 Taiwan
+
+  - name: others
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 300
     use:
       - UnjlAms
-      - America
-      - Japan
-      - TaiWan
-      - Singapore
+    proxies:
+      - 🇺🇸 United States
+      - 🇯🇵 Japan
+      - 🇹🇼 Taiwan
+      - 🇸🇬 Singapore
+      
 
 
 rule-providers:
@@ -229,7 +249,16 @@ rule-providers:
     path: ./Rules/Media/Bilibili
     interval: 604800
 
+  PersonDirect:
+    type: http
+    behavior: classical
+    url: 'https://raw.githubusercontent.com/UnjlAms/ClashPersonRule/refs/heads/main/yaml/PersonDirect.yaml'
+    path: ./Rules/Media/PersonDirect
+    interval: 604800
+    
+
 rules:
+  - RULE-SET,PersonDirect,DIRECT
   - RULE-SET,applications,DIRECT
   - DOMAIN,clash.razord.top,DIRECT
   - DOMAIN,yacd.haishan.me,DIRECT
