@@ -1,152 +1,120 @@
-port: 7890
-socks-port: 7891
+mixed-port: 7893
 allow-lan: true
-mode: Rule
-log-level: info
-external-controller: :9090
+mode: rule
+log-level: debug
+ipv6: false
+external-controller: 0.0.0.0:9090
 dns:
-enable: true
-prefer-h3: true
-default-nameserver:
-- 114.114.114.114
-- 119.29.29.29
-nameserver:
-- 114.114.114.114
-- 119.29.29.29
-fallback:
-- https://dns.google/dns-query
-- https://dns.cloudflare.com/dns-query
-fake-ip-filter:
-[
-    "*.n.n.srv.nintendo.net",
-    +.stun.playstation.net,
-    xbox.*.*.microsoft.com,
-    "*.msftncsi.com",
-    "*.msftconnecttest.com",
-    WORKGROUP,
-    "*.lan",
-    stun.*.*,
-    stun.*.*.*,
-    +.stun.*.*,
-    +.stun.*.*.*,
-    +.stun.*.*.*.*,
-    +.stun.*.*.*.*.*,
-    time.windows.com,
-    time.nist.gov,
-    time.apple.com,
-    time.asia.apple.com,
-    "*.ntp.org.cn",
-    "*.openwrt.pool.ntp.org",
-    time1.cloud.tencent.com,
-    time.ustc.edu.cn,
-    pool.ntp.org,
-    ntp.ubuntu.com,
-    "*.*.xboxlive.com",
-    speedtest.cros.wr.pvp.net,
-]
-proxies: ~
+  enable: true
+  listen: 0.0.0.0:53
+  ipv6: false
+  default-nameserver:
+    - 223.5.5.5
+    - 114.114.114.114
+  nameserver:
+    - 223.5.5.5
+    - 114.114.114.114
+    - 119.29.29.29
+    - 180.76.76.76
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-filter:
+    - "*.lan"
+    - "*.localdomain"
+    - "*.example"
+    - "*.invalid"
+    - "*.localhost"
+    - "*.test"
+    - "*.local"
+    - "*.home.arpa"
+    - router.asus.com
+    - localhost.sec.qq.com
+    - localhost.ptlogin2.qq.com
+    - "+.msftconnecttest.com"
+tun:
+  enable: true
+  stack: system
+  auto-route: true
+  auto-detect-interface: true
+  dns-hijack:
+    - 114.114.114.114:53
+    - 180.76.76.76:53
+    - 119.29.29.29:53
+    - 223.5.5.5:53
+    - 8.8.8.8:53
+    - 8.8.4.4:53
+    - 1.1.1.1:53
+    - 1.0.0.1:53
+
+proxy-providers:
+  UnjlAms:
+    type: http
+    url: ""
+    path: ./proxy/UnjlAms.yaml
+    interval: 7200
+
+  America:
+    type: http
+    url: ""
+    path: ./proxy/mojie.yaml
+    interval: 7200
+    filter: "美国"
+
+  Japan:
+    type: http
+    url: ""
+    path: ./proxy/mojie.yaml
+    interval: 7200
+    filter: "日本"
+
+  TaiWan:
+    type: http
+    url: ""
+    path: ./proxy/mojie.yaml
+    interval: 7200
+    filter: "台湾"
+
+  Singapore:
+    type: http
+    url: ""
+    path: ./proxy/mojie.yaml
+    interval: 7200
+    filter: "新加坡"
+
 
 proxy-groups:
-- name: 节点选择
-  type: select
-  proxies:
-    - 自动选择
-    - DIRECT
-  icon: https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Dinosaur.png
+  - name: PROXY
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    use:
+      - UnjlAms
+  - name: US
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    use:
+      - America
+  - name: 港澳台 BiliBili
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    proxies:
+      - DIRECT
+    use:
+      - UnjlAms
+      - TaiWan
+  - name: 其他
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    use:
+      - UnjlAms
+      - America
+      - Japan
+      - TaiWan
+      - Singapore
 
-- name: 自动选择
-  type: url-test
-  url: http://www.gstatic.com/generate_204
-  interval: 300
-  icon: https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Speedtest.png
-
-- name: 全球直连
-  type: select
-  proxies:
-    - DIRECT
-    - 节点选择
-    - 自动选择
-  icon: https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Bypass.png
-
-- name: 一堵高墙
-  type: select
-  proxies:
-    - 节点选择
-    - 自动选择
-    - 全球直连
-  icon: https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Unlock.png
-
-- name: Google
-  type: select
-  proxies:
-    - 节点选择
-    - 自动选择
-    - 全球直连
-  icon: https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Google_Search.png
-
-- name: Telegram
-  type: select
-  proxies:
-    - 节点选择
-    - 自动选择
-    - 全球直连
-  icon: https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Telegram.png
-
-- name: iCloud
-  type: select
-  proxies:
-    - 节点选择
-    - 自动选择
-    - 全球直连
-  icon: https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/iCloud.png
-
-- name: Apple
-  type: select
-  proxies:
-    - 节点选择
-    - 自动选择
-    - 全球直连
-  icon: https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Apple_1.png
-
-- name: 境外
-  type: select
-  proxies:
-    - 节点选择
-    - 自动选择
-    - 全球直连
-  icon: https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_States.png
-
-- name: 私有
-  type: select
-  proxies:
-  - 全球直连
-  - 节点选择
-  - 自动选择
-  icon: https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Clubhouse_2.png
-
-- name: 境内
-  type: select
-  proxies:
-    - 全球直连
-    - 节点选择
-    - 自动选择
-  icon: https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/China.png
-
-- name: 常用软件
-  type: select
-  proxies:
-    - 全球直连
-    - 节点选择
-    - 自动选择
-  icon: https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/App_Store.png
-
-- name: 漏网之鱼
-  type: select
-  proxies:
-    - 节点选择
-    - 自动选择
-    - 全球直连
-  icon: https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Global.png
 
 rule-providers:
   reject:
@@ -240,40 +208,39 @@ rule-providers:
     path: ./ruleset/applications.yaml
     interval: 86400
 
-# rules:
-#   - RULE-SET,applications,DIRECT
-#   - DOMAIN,clash.razord.top,DIRECT
-#   - DOMAIN,yacd.haishan.me,DIRECT
-#   - RULE-SET,private,DIRECT
-#   - RULE-SET,reject,REJECT
-#   - RULE-SET,icloud,DIRECT
-#   - RULE-SET,apple,DIRECT
-#   - RULE-SET,google,PROXY
-#   - RULE-SET,proxy,PROXY
-#   - RULE-SET,direct,DIRECT
-#   - RULE-SET,lancidr,DIRECT
-#   - RULE-SET,cncidr,DIRECT
-#   - RULE-SET,telegramcidr,PROXY
-#   - GEOIP,LAN,DIRECT
-#   - GEOIP,CN,DIRECT
-#   - MATCH,PROXY
+  AI:
+    type: http
+    behavior: classical
+    url: 'https://testingcf.jsdelivr.net/gh/dler-io/Rules@main/Clash/Provider/AI%20Suite.yaml'
+    path: ./ruleset/AI.yaml
+    interval: 604800
+    
+  TikTok:
+    type: http
+    behavior: classical
+    url: 'https://testingcf.jsdelivr.net/gh/dler-io/Rules@main/Clash/Provider/TikTok.yaml'
+    path: ./ruleset/TikTok.yaml
+    interval: 604800
+
+  Bilibili:
+    type: http
+    behavior: classical
+    url: 'https://testingcf.jsdelivr.net/gh/dler-io/Rules@main/Clash/Provider/Media/Bilibili.yaml'
+    path: ./Rules/Media/Bilibili
+    interval: 604800
 
 rules:
-  # 普通规则
-  - RULE-SET,private,私有
+  - RULE-SET,applications,DIRECT
+  - DOMAIN,clash.razord.top,DIRECT
+  - DOMAIN,yacd.haishan.me,DIRECT
+  - RULE-SET,private,DIRECT
   - RULE-SET,reject,REJECT
-  - RULE-SET,applications,常用软件
-  - RULE-SET,direct,境内
-  - RULE-SET,gfw,一堵高墙
-  - RULE-SET,icloud,iCloud
-  - RULE-SET,apple,Apple
-  - RULE-SET,google,Google
-  - RULE-SET,proxy,境外
-  # IP 地址规则
-  - RULE-SET,telegramcidr,Telegram
-  - RULE-SET,lancidr,私有
-  - RULE-SET,cncidr,境内
-  - GEOIP,LAN,私有
-  - GEOIP,CN,境内
-  # 兜底规则
-  - MATCH,漏网之鱼
+  - RULE-SET,AI,US
+  - RULE-SET,TikTok,US
+  - RULE-SET,Bilibili,港澳台 BiliBili
+  - RULE-SET,google,PROXY
+  - RULE-SET,proxy,PROXY
+  - RULE-SET,tld-not-cn,PROXY
+  - RULE-SET,gfw,PROXY
+  - RULE-SET,telegramcidr,PROXY
+  - MATCH,DIRECT
