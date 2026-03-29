@@ -246,14 +246,14 @@ rule-providers:
     type: http
     behavior: classical
     url: 'https://testingcf.jsdelivr.net/gh/dler-io/Rules@main/Clash/Provider/Media/Bilibili.yaml'
-    path: ./Rules/Media/Bilibili
+    path: ./ruleset/Bilibili.yaml
     interval: 604800
 
   PersonDirect:
     type: http
     behavior: classical
     url: 'https://raw.githubusercontent.com/UnjlAms/ClashPersonRule/refs/heads/main/yaml/PersonDirect.yaml'
-    path: ./Rules/Media/PersonDirect
+    path: ./ruleset/PersonDirect.yaml
     interval: 604800
     
 
