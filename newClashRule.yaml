@@ -256,6 +256,12 @@ rule-providers:
     path: ./ruleset/PersonDirect.yaml
     interval: 604800
     
+  PersonProxy:
+    type: http
+    behavior: classical
+    url: 'https://raw.githubusercontent.com/UnjlAms/ClashPersonRule/refs/heads/main/yaml/PersonProxy.yaml'
+    path: ./ruleset/PersonProxy.yaml
+    interval: 604800
 
 rules:
   - RULE-SET,PersonDirect,DIRECT
@@ -268,6 +274,7 @@ rules:
   - RULE-SET,apple,DIRECT
   - RULE-SET,AI,US
   - RULE-SET,TikTok,US
+  - RULE-SET,PersonProxy,PROXY
   - RULE-SET,Bilibili,港澳台 BiliBili
   - RULE-SET,google,PROXY
   - RULE-SET,proxy,PROXY
